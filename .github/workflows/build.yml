@@ -1,0 +1,37 @@
+name: Build
+
+on: push
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  GITHUB_TOKEN: ${{ secrets.PAT_SIGIL_CORE_READ }}
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: |
+          docker compose build -q
+          docker compose up -d
+          sleep 10s
+          docker compose run app setup-ci docs-build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          path: builds
+          name: builds
+
+  ghcr:
+    uses: opvance/actions/.github/workflows/build-image-and-push-to-ghcr.yml@main
+    if: startsWith(github.event.ref, 'refs/tags/v')
+    needs: build
+    secrets:
+      REPO_TOKEN: ${{ secrets.PAT_SIGIL_CORE_READ }}
+    with:
+      image_name: ${{ github.event.repository.name }}

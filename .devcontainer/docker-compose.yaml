@@ -1,0 +1,6 @@
+services:
+  app:
+    entrypoint: ["sleep"]
+    command: ["infinity"]
+    env_file:
+      - .env

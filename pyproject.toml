@@ -16,6 +16,7 @@ dependencies = [
   "typing-extensions; python_version<'3.11'",
 ]
 
+
 keywords = ["yaml", "PyYAML", "include", "yml"]
 
 license = { text = "GPLv3+" }
@@ -53,6 +54,24 @@ Repository = "https://github.com/tanbro/pyyaml-include.git"
 Documentation = "https://pyyaml-include.readthedocs.io/en/latest/"
 Issues = "https://github.com/tanbro/pyyaml-include/issues"
 Changelog = "https://github.com/tanbro/pyyaml-include/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+dev = [
+  "pytest-watch",
+]
+test = [
+  "pytest",
+  "coverage",
+]
+docs = [
+  "mike",
+  "mkdocs",
+  "mkdocs-material",
+  "mkdocstrings-python",
+]
+ci = [
+  "coverage-badge",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ -n $CODESPACES ]
+then
+  echo "GITHUB_TOKEN=$(gh auth token)" > .env
+
+else
+  if [ -e ".env" ]
+  then
+    source .env
+    echo $GHCR_TOKEN | docker login ghcr.io \
+      -u $(git config --get user.email) \
+      --password-stdin
+  else
+    echo "GITHUB_TOKEN=$(gh auth token)" > .env
+  fi
+fi
