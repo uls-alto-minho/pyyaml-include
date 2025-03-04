@@ -13,6 +13,12 @@ In version `2.0`, [fsspec][] was introduced. With it, we can even include files 
 > ⚠️ **Warning** \
 > “pyyaml-include” `2.0` is **NOT compatible** with `1.0`
 
+## On this fork
+
+- Ability to use @ to reference folder containing the yaml file in includes
+
+- Ability to use $ENV variables in includes
+
 ## Install
 
 ```bash
