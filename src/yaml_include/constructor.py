@@ -335,7 +335,6 @@ class Constructor:
     """
     base_dir = self.base_dir
     urlpath = data.urlpath
-    url_rewritten = False
 
     url_sr = urlsplit(urlpath)
     if base_dir is not None:
@@ -351,8 +350,7 @@ class Constructor:
     urlpath = os.path.expandvars(urlpath)
 
     if LOCAL_PATTERN.match(urlpath):
-      urlpath = urlpath.replace("@", os.path.dirname(self.CURRENT_FILE_PATH))
-      url_rewritten = True
+      urlpath = urlpath.replace("@", self.CURRENT_FILE_PATH)
 
     # If protocol/scheme in path, we shall open it directly with fs's default open method
     if url_sr.scheme:
@@ -432,9 +430,10 @@ class Constructor:
 
     # else if no wildcards, return a single object
     with self.fs.open(urlpath, *data.sequence_params, **data.mapping_params) as of_:
-      if not url_rewritten:
-        self.CURRENT_FILE_PATH = urlpath
+      previous_file_path = self.CURRENT_FILE_PATH
+      self.CURRENT_FILE_PATH = os.path.dirname(urlpath)
       result = load_open_file(of_, loader_type, urlpath, self.custom_loader)
+      self.CURRENT_FILE_PATH = previous_file_path
       return result
 
 
