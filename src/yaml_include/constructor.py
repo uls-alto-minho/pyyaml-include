@@ -46,7 +46,7 @@ __all__ = ["Constructor"]
 
 LOCAL_PATTERN = re.compile(r"^@")
 
-PYTHON_LIB_PATTERN = re.compile(r"^@[A-z0-9_]+:")
+PYTHON_LIB_PATTERN = re.compile(r"^@[A-z0-9_\.]+:")
 
 WILDCARDS_PATTERN = re.compile(
   r"^(.*)([\*\?\[\]]+)(.*)$"
@@ -356,7 +356,7 @@ class Constructor:
       modulename, urlpath = urlpath.split(":", 1)
       modulename = modulename.replace("@", "")
       module = importlib.import_module(modulename)
-      urlpath = os.path.join(str(module.__path__), urlpath)
+      urlpath = os.path.join(module.__path__[0], urlpath)
 
     elif LOCAL_PATTERN.match(urlpath):
       urlpath = urlpath.replace("@", self.CURRENT_FILE_PATH)
