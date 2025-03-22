@@ -44,9 +44,9 @@ if TYPE_CHECKING:  # pragma: no cover
 
 __all__ = ["Constructor"]
 
-LOCAL_PATTERN = re.compile(r"^@")
+LOCAL_PATTERN = re.compile(r"^@/")
 
-PYTHON_LIB_PATTERN = re.compile(r"^@[A-z0-9_\.]+:")
+PYTHON_LIB_PATTERN = re.compile(r"^@[A-z0-9_\.]+/")
 
 WILDCARDS_PATTERN = re.compile(
   r"^(.*)([\*\?\[\]]+)(.*)$"
@@ -353,7 +353,8 @@ class Constructor:
     urlpath = os.path.expandvars(urlpath)
 
     if PYTHON_LIB_PATTERN.match(urlpath):
-      modulename, urlpath = urlpath.split(":", 1)
+      *modulename, urlpath = urlpath.split("/")
+      modulename = ".".join(modulename)
       modulename = modulename.replace("@", "")
       module = importlib.import_module(modulename)
       urlpath = os.path.join(module.__path__[0], urlpath)
