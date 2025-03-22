@@ -7,6 +7,7 @@ from __future__ import annotations
 import os
 import re
 import sys
+import importlib
 from contextlib import contextmanager
 from dataclasses import dataclass, field
 from itertools import chain
@@ -44,6 +45,8 @@ if TYPE_CHECKING:  # pragma: no cover
 __all__ = ["Constructor"]
 
 LOCAL_PATTERN = re.compile(r"^@")
+
+PYTHON_LIB_PATTERN = re.compile(r"^@[A-z0-9_]+:")
 
 WILDCARDS_PATTERN = re.compile(
   r"^(.*)([\*\?\[\]]+)(.*)$"
@@ -349,7 +352,13 @@ class Constructor:
 
     urlpath = os.path.expandvars(urlpath)
 
-    if LOCAL_PATTERN.match(urlpath):
+    if PYTHON_LIB_PATTERN.match(urlpath):
+      modulename, urlpath = urlpath.split(":", 1)
+      modulename = modulename.replace("@", "")
+      module = importlib.import_module(modulename)
+      urlpath = os.path.join(str(module.__path__), urlpath)
+
+    elif LOCAL_PATTERN.match(urlpath):
       urlpath = urlpath.replace("@", self.CURRENT_FILE_PATH)
 
     # If protocol/scheme in path, we shall open it directly with fs's default open method
