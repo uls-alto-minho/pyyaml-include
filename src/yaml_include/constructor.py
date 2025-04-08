@@ -438,11 +438,17 @@ class Constructor:
       else:
         return result
 
-    # else if no wildcards, return a single object
+    objpath = None
+    if ":" in urlpath:
+      urlpath, objpath = urlpath.split(":")
+
     with self.fs.open(urlpath, *data.sequence_params, **data.mapping_params) as of_:
       previous_file_path = self.CURRENT_FILE_PATH
       self.CURRENT_FILE_PATH = os.path.dirname(urlpath)
       result = load_open_file(of_, loader_type, urlpath, self.custom_loader)
+      if objpath:
+        for piece in objpath.split("."):
+          result = result[piece]
       self.CURRENT_FILE_PATH = previous_file_path
       return result
 
