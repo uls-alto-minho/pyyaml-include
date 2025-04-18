@@ -116,7 +116,7 @@ class Constructor:
        The variable ``data`` containers the parsed Python object(s) from including file(s)
   """
 
-  CURRENT_FILE_PATH = None
+  CURRENT_FILE_PATH = "."
 
   fs: fsspec.AbstractFileSystem = field(default_factory=lambda: fsspec.filesystem("file"))
   """:mod:`fsspec` File-system object to parse path/url and open including files. `LocalFileSystem` by default."""
@@ -441,6 +441,12 @@ class Constructor:
     objpath = None
     if ":" in urlpath:
       urlpath, objpath = urlpath.split(":")
+
+    if not (urlpath.endswith(".yaml") or urlpath.endswith(".yml")):
+      if os.path.exists(f"{urlpath}.yaml"):
+        urlpath += ".yaml"
+      elif os.path.exists(f"{urlpath}.yml"):
+        urlpath += ".yml"
 
     with self.fs.open(urlpath, *data.sequence_params, **data.mapping_params) as of_:
       previous_file_path = self.CURRENT_FILE_PATH
