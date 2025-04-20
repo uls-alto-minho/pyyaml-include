@@ -3,11 +3,14 @@ build-backend = "setuptools.build_meta"
 requires = ["setuptools>=64", "setuptools-scm>=8"]
 
 [project]
-authors = [{ name = "liu xue yan", email = "liu_xue_yan@foxmail.com" }]
+authors = [
+  { name = "liu xue yan", email = "liu_xue_yan@foxmail.com" },
+  { name = "Tiago Taveira-Gomes", email = "tiago.taveira@sigil-enterprises.com" }
+]
 description = "An extending constructor of PyYAML: include other YAML files into current YAML document"
 name = "pyyaml-include"
 readme = "README.md"
-
+version = "v1.0.0"
 requires-python = ">=3.8"
 
 dependencies = [
@@ -15,7 +18,6 @@ dependencies = [
   "fsspec>=2021.04.0",
   "typing-extensions; python_version<'3.11'",
 ]
-
 
 keywords = ["yaml", "PyYAML", "include", "yml"]
 
@@ -46,7 +48,6 @@ classifiers = [
   "Topic :: Text Processing :: Markup",
 ]
 
-dynamic = ["version"]
 
 [project.urls]
 Homepage = "https://github.com/tanbro/pyyaml-include"
