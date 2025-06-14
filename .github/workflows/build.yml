@@ -11,6 +11,7 @@ jobs:
   build:
     uses: opvance/actions/.github/workflows/test-and-docs.yml@v1
     secrets:
+      REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       BADGES_TOKEN: ${{ secrets.PAT_BADGES }}
 
   ghcr:
