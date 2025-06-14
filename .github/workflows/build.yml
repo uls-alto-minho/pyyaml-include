@@ -9,7 +9,7 @@ permissions:
 jobs:
 
   build:
-    uses: opvance/actions/.github/workflows/test-and-docs.yml@v1
+    uses: opvance/actions/.github/workflows/test-and-docs.yml@main
     secrets:
       REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       BADGES_TOKEN: ${{ secrets.PAT_BADGES }}
